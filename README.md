@@ -1,0 +1,1 @@
+# devise_security_extension_multi_login_types
