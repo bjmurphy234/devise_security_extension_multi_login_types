@@ -11,7 +11,7 @@ module Devise # :nodoc:
       extend ActiveSupport::Concern
 
       def update_unique_session_id!(unique_session_id)
-        if self.respond_to(:unique_session_id)
+        if self.respond_to?(:unique_session_id)
           self.unique_session_id = unique_session_id
           save(:validate => false)
         end
