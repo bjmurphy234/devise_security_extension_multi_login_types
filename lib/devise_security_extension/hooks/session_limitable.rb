@@ -17,11 +17,13 @@ Warden::Manager.after_set_user :only => :fetch do |record, warden, options|
   scope = options[:scope]
 
   if warden.authenticated?(scope)
-    unless record.unique_session_id == warden.session(scope)['unique_session_id']
-      path_checker = Devise::PathChecker.new(warden.env, scope)
-      unless path_checker.signing_out?
-        warden.logout(scope)
-        throw :warden, :scope => scope, :message => :session_limited
+    if record.respond_to(:unique_session_id)
+      unless record.unique_session_id == warden.session(scope)['unique_session_id']
+        path_checker = Devise::PathChecker.new(warden.env, scope)
+        unless path_checker.signing_out?
+          warden.logout(scope)
+          throw :warden, :scope => scope, :message => :session_limited
+        end
       end
     end
   end
